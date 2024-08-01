@@ -30,17 +30,17 @@ services:
     environment:
       - PGID=100
       - PUID=1000
-      - MYSQL_ROOT_PWD=password
-      - MYSQL_USER=mysql
-      - MYSQL_USER_PWD=password
-      - MYSQL_USER_DB=bulario
+      - MYSQL_ROOT_PASSWORD=teddy
+      - MYSQL_USER=teddy
+      - MYSQL_USER_PWD=teddy
+      - MYSQL_USER_DB=teddy
     ports:
       - "3326:3306"
     volumes:
-      - data:/var/lib/mysql
+      - db:/var/lib/mysql
       - /etc/hosts:/etc/hosts:ro
       - /etc/localtime:/etc/localtime:ro
     command: ["sh", "-c", "tail -f /dev/null"]
 
 volumes:
-  data:
+  db:
