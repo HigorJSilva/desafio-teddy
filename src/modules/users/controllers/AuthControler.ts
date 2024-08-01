@@ -21,5 +21,23 @@ class AuthController {
       next(error);
     }
   }
+
+  public async login(
+    request: Request,
+    response: Response,
+    next: NextFunction
+  ): Promise<Response | undefined> {
+    try {
+      const userService = container.resolve(UserService);
+
+      const user = await userService.login(getSanitizedRequest(request));
+
+      next();
+
+      return response.json(user);
+    } catch (error) {
+      next(error);
+    }
+  }
 }
 export default AuthController;
