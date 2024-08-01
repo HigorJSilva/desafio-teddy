@@ -1,17 +1,15 @@
-FROM node:22-alpine
+FROM node:20 as base
 
-WORKDIR /usr/src/app
+WORKDIR /home/node/app
 
 COPY package*.json ./
 
-RUN npm install
-
-RUN npm install -g typescript
+RUN npm i
 
 COPY . .
 
-RUN tsc
+FROM base as production
 
-EXPOSE 3000
+ENV NODE_PATH=./build
 
-CMD ["node", "build/server.js"]
+RUN npm run build
