@@ -4,7 +4,7 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "npx nodemon",
+    "dev": "npx nodemon -L",
     "dev:debug": "nodemon --inspect src/server.ts",
     "build": "babel src --extensions \".js,.ts\" --out-dir build --copy-files",
     "build:tsc": "rimraf ./build && tsc && resolve-tspaths",
@@ -35,6 +35,7 @@
     "@babel/plugin-proposal-decorators": "^7.24.7",
     "@babel/preset-env": "^7.25.3",
     "@babel/preset-typescript": "^7.24.7",
+    "@types/express": "^4.17.21",
     "babel-cli": "^6.26.0",
     "eslint": "^9.8.0",
     "husky": "^9.1.4",
@@ -46,6 +47,8 @@
     "typescript": "^5.5.4"
   },
   "dependencies": {
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
     "reflect-metadata": "^0.2.2",
     "resolve-tspaths": "^0.8.19"
   }
