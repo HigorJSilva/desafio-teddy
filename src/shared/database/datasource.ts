@@ -1,3 +1,4 @@
+import User from '@modules/users/entity/User';
 import dotenv from 'dotenv';
 import { DataSource } from 'typeorm';
 
@@ -10,6 +11,7 @@ export const AppDataSource = new DataSource({
   username: process.env.MYSQL_USER,
   password: process.env.MYSQL_PASSWORD,
   database: process.env.MYSQL_DATABASE,
+  entities: [User],
   migrations: ['./src/shared/database/migrations/*{.ts,.js}'],
   synchronize: true,
 });
