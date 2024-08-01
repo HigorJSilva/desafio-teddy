@@ -5,6 +5,7 @@ import { emailNotUnique } from '@shared/helpers/messages/messages';
 import { inject, injectable } from 'tsyringe';
 import { IUsersRepository } from '../repositories/IUsersRepository';
 import { ValidationError } from '@shared/helpers/exceptions/ValidationError';
+import User from '../entity/User';
 
 @injectable()
 class UserService {
@@ -15,26 +16,26 @@ class UserService {
     private readonly hashProvider: IHashProvider
   ) {}
 
-  public async register({
-    name,
-    email,
-    password,
-  }: IRegisterUser): Promise<IUser | null> {
-    const emailExists = await this.usersRepository.findByEmail(email);
+  public async register(userData: IRegisterUser): Promise<IUser | null> {
+    const emailExists = await this.usersRepository.findByEmail(userData.email);
 
     if (emailExists) {
       throw new ValidationError(emailNotUnique);
     }
 
-    const hashedPassword = await this.hashProvider.generateHash(password);
+    const hashedPassword = await this.hashProvider.generateHash(
+      userData.password
+    );
 
     const user = await this.usersRepository.create({
-      name,
-      email,
+      name: userData.name,
+      email: userData.email,
       password: hashedPassword,
     });
 
-    return user;
+    const { password, ...protectedUser } = user;
+
+    return protectedUser as User;
   }
 }
 
