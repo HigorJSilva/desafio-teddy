@@ -10,5 +10,6 @@ export const AppDataSource = new DataSource({
   username: process.env.MYSQL_USER,
   password: process.env.MYSQL_PASSWORD,
   database: process.env.MYSQL_DATABASE,
+  migrations: ['./src/shared/database/migrations/*{.ts,.js}'],
   synchronize: true,
 });

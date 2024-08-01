@@ -9,7 +9,8 @@
     "build": "babel src --extensions \".js,.ts\" --out-dir build --copy-files",
     "build:tsc": "rimraf ./build && tsc && resolve-tspaths",
     "start": "npm run build && node build/server.js",
-    "start:debug": "npm start && node --inspect build/server.js"
+    "start:debug": "npm start && node --inspect build/server.js",
+    "typeorm": "ts-node ./node_modules/typeorm/cli.js"
   },
   "keywords": [],
   "author": "",
