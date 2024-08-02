@@ -4,6 +4,8 @@ import Shortener from '../entity/Shortener';
 import { IShortener } from '../entity/IShortener';
 import { randomBytes } from 'node:crypto';
 import { parse } from 'node:url';
+import { ValidationError } from '@shared/helpers/exceptions/ValidationError';
+import { notFound } from '@shared/helpers/messages/messages';
 
 @injectable()
 export default class ShortenerService {
@@ -11,6 +13,16 @@ export default class ShortenerService {
     @inject('ShortenerRepository')
     private readonly shortenerRepository: IShortenerRepository
   ) {}
+
+  public async list(userId: string): Promise<Shortener[]> {
+    const shortenUrls = await this.shortenerRepository.findByUserId(userId);
+
+    if (!shortenUrls) {
+      throw new ValidationError(notFound('Shorten urls'));
+    }
+
+    return shortenUrls;
+  }
 
   public async create(
     url: string,

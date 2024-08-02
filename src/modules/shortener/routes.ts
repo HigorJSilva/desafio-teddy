@@ -8,6 +8,8 @@ const shortenerController = new ShortenerController();
 
 const router = express.Router();
 
+router.get('/', authorize(), validateRequest, shortenerController.list);
+
 router.post(
   '/',
   authorize('guest'),

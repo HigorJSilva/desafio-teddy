@@ -1,4 +1,4 @@
-import { Repository } from 'typeorm';
+import { IsNull, Repository } from 'typeorm';
 import Shortener from '../entity/Shortener';
 import { IShortenerRepository } from './IShortenerRepository';
 import { AppDataSource } from '@shared/database/datasource';
@@ -25,6 +25,19 @@ export default class ShortenerRepository implements IShortenerRepository {
 
     return shortLink;
   }
+
+  public async findByUserId(userId: string): Promise<Shortener[] | null> {
+    return await this.ormRepository.find({
+      where: {
+        userId,
+        deleted_at: IsNull(),
+      },
+      order: {
+        created_at: 'DESC',
+      },
+    });
+  }
+
   findByShortUrl(shortUrl: string): Promise<IShortener | null> {
     throw new Error('Method not implemented.');
   }
