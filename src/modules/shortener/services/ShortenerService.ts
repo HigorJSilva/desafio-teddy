@@ -3,7 +3,6 @@ import { IShortenerRepository } from '../repositories/IShortenerRepository';
 import Shortener from '../entity/Shortener';
 import { IShortener } from '../entity/IShortener';
 import { randomBytes } from 'node:crypto';
-import { parse } from 'node:url';
 import { ValidationError } from '@shared/helpers/exceptions/ValidationError';
 import { notFound } from '@shared/helpers/messages/messages';
 
@@ -35,6 +34,23 @@ export default class ShortenerService {
       userId
     );
     return shortLink as IShortener;
+  }
+
+  public async update(
+    url: string,
+    id: string,
+    userId: string
+  ): Promise<Shortener> {
+    const shortLink = await this.shortenerRepository.findById(id, userId);
+
+    if (!shortLink) {
+      throw new ValidationError(notFound('Shorten url'));
+    }
+
+    shortLink.originUrl = url;
+    await this.shortenerRepository.save(shortLink);
+
+    return shortLink;
   }
 
   private generateShortCode(): string {

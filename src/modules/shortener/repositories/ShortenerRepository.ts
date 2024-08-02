@@ -26,6 +26,12 @@ export default class ShortenerRepository implements IShortenerRepository {
     return shortLink;
   }
 
+  public async save(shortenUrl: Shortener): Promise<Shortener> {
+    await this.ormRepository.save(shortenUrl);
+
+    return shortenUrl;
+  }
+
   public async findByUserId(userId: string): Promise<Shortener[] | null> {
     return await this.ormRepository.find({
       where: {
@@ -41,7 +47,17 @@ export default class ShortenerRepository implements IShortenerRepository {
   findByShortUrl(shortUrl: string): Promise<IShortener | null> {
     throw new Error('Method not implemented.');
   }
-  findById(id: string): Promise<IShortener | null> {
-    throw new Error('Method not implemented.');
+
+  public async findById(
+    id: string,
+    userId: string
+  ): Promise<IShortener | null> {
+    return await this.ormRepository.findOne({
+      where: {
+        id,
+        userId,
+        deleted_at: IsNull(),
+      },
+    });
   }
 }

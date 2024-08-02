@@ -41,6 +41,27 @@ class ShortenerController {
       next(error);
     }
   }
+
+  public async update(
+    request: Request,
+    response: Response,
+    next: NextFunction
+  ): Promise<Response | undefined> {
+    try {
+      const payload = <{ id: string; url: string }>getSanitizedRequest(request);
+      const shortenerService = container.resolve(ShortenerService);
+
+      const shortLink = await shortenerService.update(
+        payload.url,
+        payload.id,
+        request.params.userId
+      );
+
+      return response.json(shortLink);
+    } catch (error) {
+      next(error);
+    }
+  }
 }
 
 export default ShortenerController;

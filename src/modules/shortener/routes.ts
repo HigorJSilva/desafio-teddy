@@ -3,6 +3,7 @@ import { validateRequest } from '@shared/helpers/request/ValidateRequest';
 import ShortenerController from './controllers/ShortenerController';
 import express from 'express';
 import { CreateShortLinkRequest } from './middlewares/CreateShortLinkRequest';
+import { UpdateShortLinkRequest } from './middlewares/UpdateShortLinkRequest';
 
 const shortenerController = new ShortenerController();
 
@@ -16,6 +17,14 @@ router.post(
   CreateShortLinkRequest,
   validateRequest,
   shortenerController.create
+);
+
+router.put(
+  '/:id',
+  authorize(),
+  UpdateShortLinkRequest,
+  validateRequest,
+  shortenerController.update
 );
 
 export default router;
