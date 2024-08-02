@@ -66,6 +66,19 @@ export default class ShortenerService {
     return shortLink;
   }
 
+  public async incrementVisit(url: string): Promise<string> {
+    const shortenUrl = await this.shortenerRepository.findByShortUrl(url);
+
+    if (!shortenUrl) {
+      throw new ValidationError(notFound('Shorten url'));
+    }
+
+    shortenUrl.visits += 1;
+    await this.shortenerRepository.save(shortenUrl);
+
+    return shortenUrl.originUrl;
+  }
+
   private generateShortCode(): string {
     return randomBytes(3).toString('hex');
   }

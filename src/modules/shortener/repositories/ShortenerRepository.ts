@@ -44,8 +44,12 @@ export default class ShortenerRepository implements IShortenerRepository {
     });
   }
 
-  findByShortUrl(shortUrl: string): Promise<IShortener | null> {
-    throw new Error('Method not implemented.');
+  public async findByShortUrl(shortUrl: string): Promise<IShortener | null> {
+    return await this.ormRepository.findOne({
+      where: {
+        shortUrl,
+      },
+    });
   }
 
   public async findById(
