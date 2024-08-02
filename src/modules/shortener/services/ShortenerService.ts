@@ -53,6 +53,19 @@ export default class ShortenerService {
     return shortLink;
   }
 
+  public async delete(id: string, userId: string): Promise<Shortener> {
+    const shortLink = await this.shortenerRepository.findById(id, userId);
+
+    if (!shortLink) {
+      throw new ValidationError(notFound('Shorten url'));
+    }
+
+    shortLink.deleted_at = new Date(Date.now());
+    await this.shortenerRepository.save(shortLink);
+
+    return shortLink;
+  }
+
   private generateShortCode(): string {
     return randomBytes(3).toString('hex');
   }

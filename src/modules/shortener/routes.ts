@@ -4,6 +4,7 @@ import ShortenerController from './controllers/ShortenerController';
 import express from 'express';
 import { CreateShortLinkRequest } from './middlewares/CreateShortLinkRequest';
 import { UpdateShortLinkRequest } from './middlewares/UpdateShortLinkRequest';
+import { DeleteShortLinkRequest } from './middlewares/DeleteShortLinkRequest';
 
 const shortenerController = new ShortenerController();
 
@@ -25,6 +26,14 @@ router.put(
   UpdateShortLinkRequest,
   validateRequest,
   shortenerController.update
+);
+
+router.delete(
+  '/:id',
+  authorize(),
+  DeleteShortLinkRequest,
+  validateRequest,
+  shortenerController.delete
 );
 
 export default router;
